@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="main.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <script>
+        function addTest(){
+            var tmp = 0;
+            var div = document.createElement("div");
+            div.textContent = "parent에 추가하였다";
+            div.className = "third";
+            
+            document.getElementsByClassName("parent")[0].appendChild(div);
+        }
+        
+        
+    </script>
+    <div class="parent">
+        <div class="first">당신들은</div>
+        <div class="second">밥을</div>
+        <div class="third">먹지못한다</div>
+    </div>
+
+    <p onclick="addTest()">이거시 버튼이다 이놈들아 ㅋㅋ</p>
+    
+
+</body>
+</html>
