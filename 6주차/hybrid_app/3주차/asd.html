@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>로그인 페이지</title>
+    <style>
+        .area1{
+            border: 1px solid red;
+            height: 150px;
+        }
+        #login-container {
+            text-align: center;
+        }
+
+        #user-info {
+            display: none;
+        }
+
+        .area2{
+            float: left; /* 왼쪽 배치 */
+            width: 20%;
+            height: 800px;
+            border: 1px solid green;
+        }
+
+        .btn {
+            text-align: center;
+            margin-top: 10%;
+        }
+
+        .btn button {
+            text-align: center;
+            width: 50%; /* 버튼 너비 100%로 설정 */
+            padding: 10px; /* 버튼 안의 여백 조정 */
+            margin-bottom: 10px; /* 버튼 아래 여백 추가 */
+        }
+
+        .area3 {
+            float: left; /* 왼쪽 배치 */
+            border: 1px solid blue;
+            width: 79.77%;
+            height: 800px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="area1">
+        <div id="login-container">
+            <h1>로그인</h1>
+            <input type="text" id="username" placeholder="아이디">
+            <button onclick="login()">로그인</button>
+        </div>
+    
+        <div id="user-info">
+            <h2>안녕하세요, <span id="nickname"></span>님</h2>
+            <img src="" alt="대표 사진" id="profile-pic">
+            <button onclick="logout()">로그아웃</button>
+        </div>
+    </div>
+    <div class="area2">
+        <div class="btn">
+            <button id="btn1" onclick="displayText('안녕하세요 김예찬입니다.')">버튼1</button>
+            <button id="btn2" onclick="displayText('모르겠습니다')">버튼2</button>        
+            <button id="btn3" onclick="moveText()">버튼3</button>
+        </div>
+    </div>
+
+    <div class="area3">
+        <p id="displayed-text">여기에 내용이 나타납니다.</p>
+    </div>
+
+    <script>
+        var savedText = ""; // 저장된 텍스트를 저장할 변수
+
+        function login() {
+            // 아이디를 가져오고 닉네임과 대표 사진을 설정합니다.
+            var username = document.getElementById('username').value;
+            var nickname = "김예찬"; // 여기에 사용자의 닉네임을 설정하세요.
+            var profilePicUrl = "C:/Users/win/Desktop/3주차/apple.jpg"; // 여기에 대표 사진의 URL을 설정하세요.
+
+            // 아이디 입력 폼을 숨기고 유저 정보를 보여줍니다.
+            document.getElementById('login-container').style.display = 'none';
+            document.getElementById('user-info').style.display = 'block';
+
+            // 닉네임과 대표 사진을 설정합니다.
+            document.getElementById('nickname').textContent = nickname;
+            document.getElementById('profile-pic').src = profilePicUrl;
+        }
+
+        function logout() {
+            // 아이디 입력 폼을 다시 보여주고 유저 정보를 숨깁니다.
+            document.getElementById('login-container').style.display = 'block';
+            document.getElementById('user-info').style.display = 'none';
+
+            // 아이디 입력란을 비웁니다.
+            document.getElementById('username').value = '';
+        }
+
+        function displayText(text) {
+            // 버튼을 클릭하면 해당 버튼에 저장된 텍스트를 영역 3에 표시합니다.
+            document.getElementById('displayed-text').textContent = text;
+        }
+
+        function moveText() {
+            // 버튼3을 클릭하면 버튼1의 내용을 가져와서 버튼1의 내용을 삭제하고 "저장되었습니다" 메시지를 출력합니다.
+            savedText = document.getElementById('btn1').textContent;
+            document.getElementById('btn2').displayText = '';
+
+            document.getElementById('displayed-text').textContent = '저장되었습니다';
+        }
+    </script>
+    
+</body>
+</html>
