@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>문자열 받아내기 예제</title>
+</head>
+<body>
+    <button id="fetchData">데이터 받아오기</button>
+    <p id="result"></p>
+
+    <script>
+        document.getElementById('fetchData').addEventListener('click', function() {
+            // 서버의 'hi' API에 GET 요청을 보냅니다.
+            fetch('http://localhost:8005/hi')
+                .then(response => response.text())
+                .then(data => {
+                    // 받아온 데이터를 p 태그에 넣어 표시합니다.
+                    document.getElementById('result').innerText = data;
+                })
+                .catch(error => {
+                    console.error('데이터를 가져오는 중 오류 발생: ', error);
+                });
+        });
+    </script>
+</body>
+</html>
