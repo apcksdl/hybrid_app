@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <script src="snake.js"></script>
+    <script src="apple.js"></script>
+    <script src="figure.js"></script>
+    <canvas id="ByamCanvas" width="1000" height="700"></canvas>
+    <style>
+      #ByamCanvas 
+      {
+        border: 1px solid black; margin: 50px;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      #gameInfo {
+        position: absolute;
+        top: 10px; /* 원하는 상단 여백 */
+        left: 10px; /* 원하는 왼쪽 여백 */
+        color: black; /* 텍스트 색상 */
+      }
+    </style>
+    <script>
+    // 전역 변수
+    const canvas = document.getElementById('ByamCanvas');
+    const context = canvas.getContext('2d');
+    var mouseX = canvas.width / 2; // 가운데에서 시작
+    var mouseY = canvas.height / 2; // 가운데에서 시작
+    var Player = [];
+    
+    // 게임 루프
+    setInterval(gameLoop, 1000 / 60);
+
+    function gameLoop() {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      if (isMouseClicked) {
+        // 가속화 시 뱀의 속도를 증가시킴
+        Player[0].Speed = 10; // 예시로 10으로 설정, 조절 가능
+      } else {
+        // 클릭이 해제되면 다시 일반 속도로 복원
+        Player[0].Speed = 5; // 원래 속도로 복원
+        updateObstacles();
+        drawObstacles();
+        handleCollisions();
+      }
+      
+      // 머리 부분 따로 업데이트
+      Player[0].Update();
+      Player[0].Draw();
+      // 몸통 부분 따로 업데이트
+      for (let i = 1; i < Player.length; i++) {
+        let prevBody = Player[i - 1];
+        let currentBody = Player[i];
+        currentBody.Update();
+        // 몸통 간의 간격을 유지 (크기 고려)
+        let distance = bodySpacing * (prevBody.Size + currentBody.Size);
+        currentBody.PosX = prevBody.PosX - distance * Math.cos(currentBody.Angle);
+        currentBody.PosY = prevBody.PosY - distance * Math.sin(currentBody.Angle);
+        currentBody.Draw();
+      }
+      // 먹을 오브젝트 그리기
+      for (let i = 0; i < foods.length; i++) {
+        foods[i].Draw();
+      }
+      updateObstacles();
+      drawObstacles();
+      handleCollisions();
+      checkBoundary(Player[0]); // 화면 경계를 검사하여 뱀을 화면 안으로 유지
+      checkCollision(); // 먹을 오브젝트와 뱀의 충돌 검사 수행   
+      updateGameInfo() // 게임 정보 업데이트
+    }
+    // 화면 경계를 검사하여 뱀을 화면 안으로 유지하는 함수
+    function checkBoundary(playerHead) {
+      if (playerHead.PosX < 0) {
+        playerHead.PosX = 0;
+      }
+      if (playerHead.PosX > canvas.width) {
+        playerHead.PosX = canvas.width;
+      }
+      if (playerHead.PosY < 0) {
+        playerHead.PosY = 0;
+      }
+      if (playerHead.PosY > canvas.height) {
+        playerHead.PosY = canvas.height;
+      }
+    }
+    
+
+    // 마우스 이벤트
+    addEventListener('mousemove', onMousemove);
+
+    function onMousemove(event) {
+      mouseX = event.clientX - canvas.getBoundingClientRect().left;
+      mouseY = event.clientY - canvas.getBoundingClientRect().top;
+    }
+
+    // 초기 뱀 생성
+    Player.push(new PlayerBody(canvas.width / 2, canvas.height / 2)); // 가운데에서 시작
+    Player.push(new PlayerBody(100, 100)); // 첫 번째 몸통
+    Player.push(new PlayerBody(70, 70));   // 두 번째 몸통
+
+    let isMouseClicked = false;
+    addEventListener('mousedown', onMouseDown);
+    addEventListener('mouseup', onMouseUp);
+
+
+    
+// 초기 간격으로 프로세스를 시작합니다
+createObstacleWithIncreasingFrequency();
+
+// 시간과 뱀의 길이를 업데이트하는 함수
+function updateGameInfo() {
+  const currentTime = Math.floor((Date.now() - gameStartTime) / 1000); // 현재 경과 시간 (초)
+  const snakeLength = Player.length; // 뱀의 길이
+
+  const gameTimeElement = document.getElementById('gameTime');
+  const snakeLengthElement = document.getElementById('snakeLength');
+
+  gameTimeElement.textContent = `Time: ${currentTime} seconds`;
+  snakeLengthElement.textContent = `Snake Length: ${snakeLength}`;
+}
+
+
+</script>
+<div id="gameInfo">
+  <span id="gameTime">Time: 0 seconds</span>
+  <span id="snakeLength">Snake Length: 1</span>
+</div>
+
+  </body>
+</html>
